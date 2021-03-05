@@ -1,5 +1,6 @@
 package com.viniciusog.heroesapi.services;
 
+import com.viniciusog.heroesapi.entities.DTO.HeroDTO;
 import com.viniciusog.heroesapi.entities.Hero;
 import com.viniciusog.heroesapi.services.exceptions.DatabaseException;
 import com.viniciusog.heroesapi.services.exceptions.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,5 +73,13 @@ public class HeroService {
             heroDatabase.setUniverse(updatedHero.getUniverse());
             heroDatabase.setMovies(updatedHero.getMovies());
 
+    }
+
+    public List<HeroDTO> heroesToListDTO(List<Hero> heroes) {
+        List<HeroDTO> heroesDTO = new ArrayList<>();
+        for (Hero h : heroes) {
+            heroesDTO.add(new HeroDTO(h));
+        }
+        return heroesDTO;
     }
 }

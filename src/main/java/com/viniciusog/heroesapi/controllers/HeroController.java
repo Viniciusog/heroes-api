@@ -1,5 +1,6 @@
 package com.viniciusog.heroesapi.controllers;
 
+import com.viniciusog.heroesapi.entities.DTO.HeroDTO;
 import com.viniciusog.heroesapi.entities.Hero;
 import com.viniciusog.heroesapi.services.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +19,23 @@ public class HeroController {
     private HeroService service;
 
     @PostMapping
-    public ResponseEntity<Hero> insert(@RequestBody Hero hero) {
+    public ResponseEntity<HeroDTO> insert(@RequestBody Hero hero) {
         Hero h = service.create(hero);
-
+        HeroDTO hDTO = new HeroDTO(h);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(h.getId()).toUri();
-        return ResponseEntity.created(uri).body(h);
+        return ResponseEntity.created(uri).body(hDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Hero> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<HeroDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(new HeroDTO(service.findById(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<Hero>> listAll() {
+    public ResponseEntity<List<HeroDTO>> listAll() {
         List<Hero> heroes = service.listAll();
-        return ResponseEntity.ok().body(heroes);
+        return ResponseEntity.ok().body(service.heroesToListDTO(heroes));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -45,8 +46,8 @@ public class HeroController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Hero> update(@PathVariable Long id, @RequestBody Hero hero) {
+    public ResponseEntity<HeroDTO> update(@PathVariable Long id, @RequestBody Hero hero) {
         Hero heroUpdatedFromDB = service.update(id, hero);
-        return ResponseEntity.ok().body(heroUpdatedFromDB);
+        return ResponseEntity.ok().body(new HeroDTO(heroUpdatedFromDB));
     }
 }

@@ -1,8 +1,13 @@
 package com.viniciusog.heroesapi.entities.DTO;
 
+import com.viniciusog.heroesapi.entities.Hero;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class HeroDTO {
+public class HeroDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String name;
@@ -16,7 +21,17 @@ public class HeroDTO {
 
     }
 
-    public HeroDTO(Long id, String name, String description, String universe, String imageUrl, String link, Integer movies) {
+    public HeroDTO(Hero hero) {
+        this.id = hero.getId();
+        this.name = hero.getName();
+        this.description = hero.getDescription();
+        this.universe = hero.getUniverse();
+        this.imageUrl = hero.getImageUrl();
+        this.link = hero.getLink();
+        this.movies = hero.getMovies();
+    }
+
+    /*public HeroDTO(Long id, String name, String description, String universe, String imageUrl, String link, Integer movies) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -24,7 +39,7 @@ public class HeroDTO {
         this.imageUrl = imageUrl;
         this.link = link;
         this.movies = movies;
-    }
+    }*/
 
     public Long getId() {
         return id;
